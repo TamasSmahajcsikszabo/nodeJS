@@ -2,7 +2,7 @@ const routeResponseMap = {
   '/info': '<h1>Main info page<h1>',
   '/contact': '<h1>Contact us<h1>',
   '/about': '<h1>Learn more<h1>',
-  '/hello': `<h1>Say hello by emailing us at ${tadee84@gmail.com}<h1>`,
+    '/hello': `<h1>Say hello by emailing us <a href="mailto:tadee84@gmail.com">here</a> <h1>`,
   '/error': '<h1>Sorry the page you are looking for is not here<h1>'
 }
 const func = require('./functions.js')
