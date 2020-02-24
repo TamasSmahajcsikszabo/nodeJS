@@ -37,7 +37,10 @@ router.post("/", (req, res) => {
   res.writeHead(httpStatusCodes.OK, plainTextContentType);
   res.end("POSTED");
 });
-
+router.get("/panda.jpg", (req, res) => {
+  res.writeHead(httpStatusCodes.OK, imageContentType);
+  customReadFile("public/images/panda.jpg", res)
+});
 http.createServer(router.handle).listen(3000);
 console.log(`The server is listening on port number:
  ${port}`);
