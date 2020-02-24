@@ -11,7 +11,7 @@ const routes = {
 
 exports.handle = (req, res) => {
     try {
-        routes[req.method][req.url](res, req)
+        routes[req.method][req.url](req, res)
     } catch (ex) {
         res.writeHead(httpStatus.OK, contentTypes.html)
         utils.getFile("views/error.html", res)

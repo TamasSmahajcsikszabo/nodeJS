@@ -3,7 +3,7 @@ const fs = require("fs"),
     httpStatus = require("http-status-codes"),
     contentTypes = require("./contentTypes");
 
-model.exports = {
+module.exports = {
     getFile: (file, res) => {
         fs.readFile(`./${file}`, (error, data) => {
             if (error) {
