@@ -8,7 +8,7 @@ app.set("port", process.env.PORT || 3000) // application settings property
 
 // initiate using templating
 app.set("view engine", "ejs") // to set the view engine as 'ejs'
-
+app.use(express.static("public")) //enables classic static files as well
 app.use(layouts) //to use layouts as an additional layer of middleware
 app.get("/name/:myName", hc.respondWithName)
 app.get("/contact", hc.contactInformation)

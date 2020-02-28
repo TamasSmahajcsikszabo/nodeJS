@@ -5,13 +5,13 @@ const http = require("http-status-codes")
     // next(error)
 // } 
 
-exports.respondNoResourceFound = (req, res) => {
+exports.pageNotFoundError = (req, res) => {
     let errorCode = http.NOT_FOUND
     res.status(errorCode)
-    // res.send(`${errorCode} | The page does not exist!`)
-    res.sendFile(`./public/${errorCode}.html`, {root: "./"})
+    res.render("error")
 } 
-exports.respondInternalError = (error, req, res, next) => {
+
+exports.internalServerError = (error, req, res, next) => {
     let errorCode = http.INTERNAL_SERVER_ERROR
     console.log(`ERROR occured: ${error.stack}`)
     res.status(errorCode)
