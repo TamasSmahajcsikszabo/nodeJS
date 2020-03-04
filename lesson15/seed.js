@@ -6,7 +6,7 @@ mongoose.connect(
     { useNewUrlParser: true }
 )
 
-mongoose.conntection;
+mongoose.connection;
 
 var contacts = [
      {
