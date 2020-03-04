@@ -1,12 +1,23 @@
 const mongoose = require("mongoose"),
     datamodels = require("../models/datamodels.js")
 
-exports.getAllSubscribers = (req, res, next) => {
-    datamodels.Subscriber.find( {}, (error, subscribers) => {
-        if (error) next(error);
-        req.data = subscribers;
-        next();
-    })
+// promise version of this function
+exports.getAllSubscribers = (req, res) => {
+    datamodels.Subscriber.find({})
+        .exec() //invoking the query to return a promise
+
+        .then((subscribers)  =>  {
+            res.render("subscribers", {
+                subscribers: subscribers
+            })
+        })
+        .catch((error)  => {
+            console.log(error.message)
+            return []
+        })
+        .then(() => {
+            console.log("promise complete")
+        })
 }
 
 exports.getSubscriptionPage = (req, res) => {
@@ -20,9 +31,13 @@ exports.saveSubscriber = (req, res) => {
         zipCode: req.body.zipCode
     });
     
-    newSubscriber.save((error, result) => {
-        if (error) res.send(error);
-        res.render("thanks")
-        console.log(`User ${req.body.name} added to database`)
-    })
+    newSubscriber.save()
+        .then(result  => {
+            res.render("thanks")
+            console.log(`User ${req.body.name} saved`)
+        })
+        .catch(error  => {
+            if (error) res.send(error)
+        })
+    
 } 

@@ -1,5 +1,5 @@
 "use strict";
-"test"
+
 const express = require("express"),
     app = express(),
     homeController = require("./controllers/homeControllers"),
@@ -14,7 +14,9 @@ const express = require("express"),
 mongoose.connect(
         "mongodb://localhost:27017/recipe_db",
         {useNewUrlParser: true});
+
 mongoose.Promise = global.Promise    
+
 const db = mongoose.connection;
 db.once("open", () => {
     console.log("Successfully connected to MongoSB using Mongoose!")
