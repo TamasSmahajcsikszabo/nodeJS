@@ -44,7 +44,7 @@ contacts.forEach((c)  => {
 
 Promise.all(commands)
     .then(r  => {
-        console.log(JSON.stringify(r) + '\n')
+        console.log(JSON.stringify(r) + '<br>')
         mongoose.connection.close()
     } )
     .catch(error  =>{
