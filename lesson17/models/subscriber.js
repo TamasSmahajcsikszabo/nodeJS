@@ -15,7 +15,9 @@ const mongoose = require("mongoose"),
             type: Number, 
             min: [1000, "Zip code too short"],
             max: [99999, "Zip code too long"]
-        }
+        },
+        courses: [{type: mongoose.Schema.Types.ObjectId, ref: "Course"}] // one model referencing the other is enough, no need to reference Subscriber to Course
+        // the brackets singify an array of objects, removing them makes the object expecting one course item
     })
 
 // adding instance methods
