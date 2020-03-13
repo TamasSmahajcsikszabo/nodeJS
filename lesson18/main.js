@@ -4,9 +4,11 @@ const mongoose = require("mongoose"),
     express = require("express"),
     layouts = require("express-ejs-layouts"),
     app = express(),
-    errorControllers = require('./controllers/errorController.js');
+    errorControllers = require('./controllers/errorController.js'),
+    userController = require('./controllers/usersController'),
+    courseController = require('./controllers/coursesController');
 
-mongoose.connect("mongodb://localhost:27017/confetti_quisine", 
+mongoose.connect("mongodb://localhost:27017/recipe_db", 
     { useNewUrlParser: true })
 
 mongoose.Promise = global.Promise
@@ -24,9 +26,10 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
     res.render("index")
 })
-app.get("/courses", homeController.showCourses)
-app.get("/subscribers", subscriberController.getAllSubscribers)
+app.get("/courses", courseController.index, courseController.indexView)
+app.get("/subscribers", subscriberController.index)
 app.get("/contact", subscriberController.getSubscriptionPage)
+app.get("/users", userController.index, userController.indexView)
 app.post("/subscribe", subscriberController.saveSubscriber)
 
 

@@ -5,6 +5,8 @@
         <th>Name</th>
         <th>Email</th>
         <th>Zip Code</th>
+        <th>Subscribed Courses</th>
+        <th>Length of Name</th>
       </tr>
     </thead>
     <tbody>
@@ -13,6 +15,8 @@
         <td><%= user.fullName%></td>
         <td><%= user.email%></td>
         <td><%= user.zipCode%></td>
+        <td><%= user.subscribedCourse%></td>
+        <td><%= user.nameLength()%></td>
       </tr>
       <% }); %>
     </tbody>

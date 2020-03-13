@@ -49,10 +49,11 @@ User.deleteMany({ email: "thomastaylor@gmail.com" })
 // book variant:
 User.create({   
     name: {
-        first: "Thomas",
-        last: " Taylor "
+        first: "Anne",
+        last: " Green "
     },
-    email: "thomastaylor@gmail.com",
+    email: "annegreen@gmail.com",
+    zipCode: 18928, 
     password: "pass123"
 })
     .then(user  => {

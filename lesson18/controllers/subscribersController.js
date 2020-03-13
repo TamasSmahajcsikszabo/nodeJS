@@ -1,11 +1,11 @@
 const Subscriber = require("../models/subscriber.js")
 
 module.exports = {
-    getAllSubscribers: (req, res) => {
+    index: (req, res) => {
     Subscriber.find({})
         .exec()
         .then((subscribers) => {
-            res.render("subscribers", {
+            res.render("subscribers/index", {
                 subscribers: subscribers
             })
         })
