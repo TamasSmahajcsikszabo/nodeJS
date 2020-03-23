@@ -37,7 +37,8 @@ module.exports = {
             .then(user  =>  {
                 res.locals.redirect = "/users";
                 res.locals.user = user;
-                next();
+                next(); // passes on the resulting created user through the response object
+                console.log(`User account with ${userParams.email} has been created successfully!`)
             })
             .catch(error  => {
                 console.log(`Error saving user: ${error.message}`);

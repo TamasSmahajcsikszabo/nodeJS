@@ -22,5 +22,8 @@ module.exports = {
     },
     index: (req, res) => {
         res.render("index");
+    },
+    getSubscriptionPage: (req, res) => {
+    res.render("contact")
     }
 };

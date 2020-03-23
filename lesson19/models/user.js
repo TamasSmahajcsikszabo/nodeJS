@@ -45,22 +45,43 @@ userSchema.virtual("fullName")
         return `${this.name.first} ${this.name.last}`;
     });
 
-mongoose.connect("mongodb://localhost:27017/recipe_db",
-        { useNewUrlParser  : true}
-        );
-var course;
-userSchema.virtual("subscribedCourse")
-    .get(function() {
+// mongoose.connect("mongodb://localhost:27017/recipe_db",
+//         { useNewUrlParser  : true}
+//         );
+// var course;
+// userSchema.virtual("subscribedCourse")
+//     .get(function() {
+//         Subscriber.findOne({
+//             email: this.email
+//         })
+//             .then(subscriber => {
+//                 return Subscriber.populate(subscriber, "courses");
+//             })
+//     .then(subscriber => {
+//         course = subscriber.courses[0].title;
+//     })
+//         return course
+//     });
+
+
+// hook
+userSchema.pre("save", function (next) {
+    let user = this;
+    if (user.subscribedAccount === undefined) {
         Subscriber.findOne({
-            email: this.email
+            email: user.email
         })
-            .then(subscriber => {
-                return Subscriber.populate(subscriber, "courses");
+            .then(subscriber  => {
+                user.subscribedAccount = subscriber;
+                next();
             })
-    .then(subscriber => {
-        course = subscriber.courses[0].title;
-    })
-        return course
-    });
+            .catch(error => {
+                console.log(`Error in connecting subscriber: ${error.message}`);
+                next(error);
+            })
+    } else {
+        next();
+    }
+});
 
 module.exports = mongoose.model("User", userSchema);

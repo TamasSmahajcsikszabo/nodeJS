@@ -19,28 +19,30 @@ module.exports = {
 },
 
     new: (req, res) => {
-        res.render("users/new");
+        res.render("subscribers/new");
     },
 
     create: (req, res, next)  => {
         let userParams = {
-            name: {
-                first: req.body.first,
-                last: req.body.last
-            },
+            name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
             zipCode: req.body.zipCode
         };
-    User.create(userParams)
-            .then(user  =>  {
-                res.locals.redirect = "/users";
-                res.locals.user = user;
+    Subscriber.create(userParams)
+            .then(subscriber =>  {
+                res.locals.redirect = "/subscribers";
+                res.locals.subscriber = subscriber;
                 next();
+                console.log(`${userParams.name} has subscribed successfully!`)
             })
             .catch(error  => {
-                console.log(`Error saving user: ${error.message}`);
+                console.log(`Error saving subscriber: ${error.message}`);
                 next(error);
             });
+    },
+    redirectView: (req, res, next) => {
+        let redirectPath = res.locals.redirect;
+        if (redirectPath) res.redirect(redirectPath);
+        else next();
     }
 }
