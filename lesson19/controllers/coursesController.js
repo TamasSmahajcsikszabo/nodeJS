@@ -45,5 +45,20 @@ module.exports = {
         let redirectPath = res.locals.redirect;
         if (redirectPath) res.redirect(redirectPath);
         else next();
+    },
+    show: (req, res, next) => {
+        let courseId = req.params.id;
+        Course.findById(courseId)
+            .then(course=> {
+                res.locals.course = course;
+                next();
+            })
+            .catch(error => {
+                console.log(`Error fetching course by ID: ${error.message}`);
+            })
+    },
+
+    showView: (req, res) => {
+        res.render("courses/show");
     }
 };

@@ -34,6 +34,7 @@ router.get("/", homeController.index)
 router.get("/courses", courseController.index, courseController.indexView)
 router.get("/courses/new", courseController.new)
 router.post("/courses/create", courseController.create, courseController.redirectView)
+router.get("/courses/:id", courseController.show, courseController.showView)
 
 //subscribers
 router.get("/subscribers", subscriberController.index)

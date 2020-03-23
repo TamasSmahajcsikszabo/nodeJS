@@ -13,7 +13,10 @@
     <tbody>
       <% courses.forEach(course=> { %>
       <tr>
-        <td><%=course.title%></td>
+        <td>
+          <a href="<%= `/courses/${course._id}` %>" >
+            <%= course.title %>
+        </td>
         <td><%=course.description%></td>
         <td><%=course.items%></td>
       </tr>
