@@ -10,7 +10,9 @@ const mongoose = require("mongoose"),
     courseController = require('./controllers/coursesController');
 
 mongoose.connect("mongodb://localhost:27017/recipe_db", 
-    { useNewUrlParser: true })
+    { useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
 
 mongoose.Promise = global.Promise
 app.set("view engine", "ejs");
@@ -30,6 +32,8 @@ router.get("/", homeController.index)
 
 //courses
 router.get("/courses", courseController.index, courseController.indexView)
+router.get("/courses/new", courseController.new)
+router.post("/courses/create", courseController.create, courseController.redirectView)
 
 //subscribers
 router.get("/subscribers", subscriberController.index)
