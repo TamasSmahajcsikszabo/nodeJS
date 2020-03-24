@@ -1,0 +1,21 @@
+<div class="data-form">
+  <form class="form-singin" action="<%= `/users/${user._id}/update?_method=PUT` %>" method="POST">
+    <h2 style="font-size: 22px">Create a new user</h2>
+    <label for="inputFirstName">First Name</label> <br>
+    <input type="text" name="first" id="inputFirstName" value="<%= user.name.first %>" autofocus> <br>
+    </br>
+    <label for="inputLastName">Last Name</label> <br>
+    <input type="text" name="last" id="inputLastName" value="<%= user.name.last %>"> <br> 
+    </br>
+    <label for="inputPassWord">Password</label> <br>
+    <input type="password" name="password" id="inputPassword" value="<%= user.password %>" required> <br>
+    </br>
+    <label for="inputEmail">Email address</label> <br>
+    <input type="email" name="email" id="inputEmail" value="<%= user.email %>" required> <br>
+    </br>
+    <label for="inputZipCode">Zip code</label> <br>
+    <input type="text" name="zipCode" id="inputZipCode" pattern="\d*" value="<%= user.zipCode %>" required> <br>
+    </br>
+    <button class="btn btn-primary btn-lg btn-block" style="background-color: #0080FF" type="submit" >Update</button>
+  </form>
+</div>
