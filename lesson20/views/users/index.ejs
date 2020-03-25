@@ -6,6 +6,7 @@
         <th>Email</th>
         <th>Zip Code</th>
         <th>Edit</th>
+        <th>Delete</th>
         <!-- <th>Subscribed Courses</th> -->
         <!-- <th>Length of Name</th> -->
       </tr>
@@ -23,6 +24,10 @@
           <a href="<%= `/users/${user._id}/edit` %>">
           Edit
           </a>
+        </td>
+        <td>
+          <a href="<%= `/users/${user._id}/delete?_method=DELETE` %>"
+          onclick="return confirm('Sure?')">Delete</a>
         </td>
         <!-- <td><%= user.subscribedCourse%></td> -->
         <!-- <td><%= user.nameLength()%></td> -->

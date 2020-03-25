@@ -1,6 +1,6 @@
 <div class="data-form">
   <form class="form-singin" action="<%= `/users/${user._id}/update?_method=PUT` %>" method="POST">
-    <h2 style="font-size: 22px">Create a new user</h2>
+    <h2 style="font-size: 22px">Update user profile</h2>
     <label for="inputFirstName">First Name</label> <br>
     <input type="text" name="first" id="inputFirstName" value="<%= user.name.first %>" autofocus> <br>
     </br>
