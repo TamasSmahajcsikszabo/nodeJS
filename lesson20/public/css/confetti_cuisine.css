@@ -62,13 +62,23 @@ a {
 }
 
 .data-form {
-    max-width: 200px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.form-signin {
+    width: 500px;
     margin: 0 auto;
 }
 
+.myinput {
+    width: 500px;
+}
 /* .data-form label { */
 /*     margin: 5px 0 0 0; */
 /*     font-size: 10px; */
 /* } */
 
-
+.custButton {
+    display: inline-block;
+    max-width: 200px;
+}

@@ -19,9 +19,14 @@
   </tr>
 </table>
 
-  <a href="/subscribers">
-    <span class="button">Show all subscribers</span>
-  </a>
-  <a href="/users">
-    <span class="button">Show all users</span>
-  </a>
+<div class="custButton">
+  <a href="/users" class="button">Show all users</a>
+</div>
+<br>
+<div class="custButton">
+  <a href="<%= `/subscribers/${subscriber._id}/edit` %>"class="button">Edit subscriber details</a>
+</div>
+<br>
+<div class="custButton">
+  <a href="<%= `/subscribers/${subscriber._id}/delete?_method=DELETE` %>" class="button" onclick="return corfirm('Are you sure?')">Delete subscriber</a>
+</div>
