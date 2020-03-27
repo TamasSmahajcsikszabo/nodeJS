@@ -44,25 +44,9 @@ userSchema.virtual("fullName")
     .get(function() {
         return `${this.name.first} ${this.name.last}`;
     });
-
 userSchema.virtual("subscribedCourse")
     .get(function() {
-        var title;
-        if (this.courses !== null) {
-            this.courses.forEach(course  => {
-        Course.findOne({
-            _id: course
-        })
-            .then(course => {
-                title = course.title
-                console.log(`End result: ${title}`)
-            })
-            .catch(error  => {
-                console.log(error.message)
-            })
-            })
-        return title;
-        }
+        return this.courses
     });
 
 

@@ -1,5 +1,4 @@
 <h1>User data for <%= user.fullName %></h1>
-
 <table class="table">
   <tr>
     <th>Name</th>
@@ -17,10 +16,6 @@
     <th>Password</th>
     <td><%= user.password%></td>
   </tr>
-  <tr>
-    <th>Subscribed Courses</th>
-    <td><%= user.subscribedCourse%></td>
-  </tr>
 </table>
 
 
@@ -28,6 +23,13 @@
     <h4 class="center"> This user has a
     <a href="<%=`/subscribers/${user.subscribedAccount}` %>">
     subscribed account</a>.
+    </h4>
+<% } %>
+
+<% if (user.subscribedCourse) {%>
+    <h4 class="center"> This user has subscribed to
+    <a href="<%=`/courses/${user.subscribedCourse}` %>">
+    course</a>.
     </h4>
 <% } %>
 
