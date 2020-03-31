@@ -27,7 +27,12 @@ module.exports = {
 
 // action 2 to serve the results to the view
     indexView: (req, res)  => {
-        res.render("users/index");
+        // flash message passed directly as local variable
+        res.render("users/index", {
+            flashMessages: {
+                success: "Loaded all users!"    
+            }
+        });
     },
 
     new: (req, res) => {
@@ -88,30 +93,37 @@ module.exports = {
     },
 
     update: (req, res, next) => {
-    let userParams = getUserParams(req.body);
+    let userId = req.params.id;
+        userParams = getUserParams(req.body);
+
        User.findByIdAndUpdate(userId, {
             $set: userParams
         })
             .then(user  => {
                 res.locals.redirect = `/users/${userId}`;
                 res.locals.user = user;
+                req.flash('success', `${user.fullName} successfully updated!`)
                 next();
             })
             .catch(error  => {
+                req.flash('error', `Error ${error.message} occured while updating user.`)
                 console.log(`Error updating user by ID: ${error.message}`);
-                next(error);
+                next();
             });
     },
     delete: (req, res, next)  => {
         let userId = req.params.id;
         User.findByIdAndRemove(userId)
             .then(() => {
+                req.flash('success', `User deleted!`)
                 res.locals.redirect = "/users";
                 next();
             })
             .catch(error  => {
+                req.flash('error', `Error ${error.message} occured while deleting user!`)
+                res.locals.redirect = "/users"
                 console.log('Error deleting user by ID: ${error.message}');
-                next(error);
+                next();
             });
     }
 };

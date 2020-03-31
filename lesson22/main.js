@@ -10,7 +10,7 @@ const mongoose = require("mongoose"),
     courseController = require('./controllers/coursesController'),
     methodOverride = require("method-override"),
     expressSession = require("express-session"), //application - client communication
-    cookieParser = require("cookie-parser"), // to use cookies to store and decode data bach to the server from user browser
+    cookieParser = require("cookie-parser"), // to use cookies to store and decode data back to the server from user browser
     connectFlash = require("connect-flash"); //to create flash messages; it uses a secret passcode to encrypt data in cookies
 
 router.use(cookieParser("secret_passcode")); //cookie pass code to encrypt data
@@ -45,6 +45,7 @@ router.use(methodOverride("_method", {
     methods: ["POST", "GET"]
 }));
 
+// express will treat the connect-flash messages as local variables on the response
 router.use((req, res, next) => {
     res.locals.flashMessages = req.flash();
     next();
@@ -63,8 +64,8 @@ router.delete("/courses/:id/delete", courseController.delete, courseController.r
 
 //subscribers
 router.get("/subscribers", subscriberController.index)
-router.get("/contact", subscriberController.new)
-router.post("/subscribe", subscriberController.create, subscriberController.redirectView)
+router.get("/subscribers/new", subscriberController.new)
+router.post("/subscribers/create", subscriberController.create, subscriberController.redirectView)
 router.get("/subscribers/:id", subscriberController.show, subscriberController.showView)
 router.get("/subscribers/:id/edit", subscriberController.edit)
 router.put("/subscribers/:id/update", subscriberController.update, subscriberController.redirectView)

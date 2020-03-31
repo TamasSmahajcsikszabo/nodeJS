@@ -1,4 +1,12 @@
 const Course = require('../models/course.js');
+getCourseParams = body => {
+    return {
+            title: body.title,
+            description: body.description,
+            items: body.items,
+            zipCode: body.zipCode
+    }
+};
 
 module.exports = {
  // action 1 to run the query   
@@ -23,21 +31,18 @@ module.exports = {
     },
 
     create: (req, res, next)  => {
-        let courseParams = {
-            title: req.body.title,
-            description: req.body.description,
-            items: req.body.items,
-            zipCode: req.body.zipCode
-        };
+        let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
             .then(course =>  {
+                req.flash('success', `Course ${course.title} successfully created!`)
                 res.locals.redirect = "/courses";
                 res.locals.course = course;
                 next(); // passes on the resulting created user through the response object
             })
             .catch(error  => {
                 console.log(`Error saving course : ${error.message}`);
-                next(error);
+                req.flash('error', `Error ${error.message} occured while creating course!`)
+                next();
                 res.locals.redirect = "/courses/new";
             });
     },
@@ -78,12 +83,7 @@ module.exports = {
 
     update: (req, res, next) => {
         let courseId = req.params.id;
-        courseParams = {
-            title: req.body.title,
-            description: req.body.description,
-            items: req.body.items,
-            zipCode: req.body.zipCode
-        };
+        courseParams = getCourseParams(req.body);
 
        Course.findByIdAndUpdate(courseId, {
             $set: courseParams
@@ -91,11 +91,13 @@ module.exports = {
             .then(course  => {
                 res.locals.redirect = `/courses/${courseId}`;
                 res.locals.course = course;
+                req.flash('success', `Successfully updated course ${course.title}`)
                 next();
             })
             .catch(error  => {
                 console.log(`Error updating course by ID: ${error.message}`);
-                next(error);
+                req.flash('error', `Error occured while updating course!`)
+                next();
             });
     },
 
@@ -104,11 +106,14 @@ module.exports = {
         Course.findByIdAndRemove(courseId)
             .then(() => {
                 res.locals.redirect = "/courses";
+                req.flash('success', `Deleted course!`)
                 next();
             })
             .catch(error  => {
                 console.log('Error deleting course by ID: ${error.message}');
-                next(error);
+                res.locals.redirect = "/courses";
+                req.flash('error', `Error while deleting course!`)
+                next();
             });
     }
 };

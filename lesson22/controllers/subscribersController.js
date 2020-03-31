@@ -1,4 +1,12 @@
 const Subscriber = require("../models/subscriber.js")
+getSubscriberParams = body  => {
+    return {
+            name: body.name,
+            email: body.email,
+            zipCode: body.zipCode
+        
+    }
+};
 
 module.exports = {
     index: (req, res) => {
@@ -23,22 +31,20 @@ module.exports = {
     },
 
     create: (req, res, next)  => {
-        let userParams = {
-            name: req.body.name,
-            email: req.body.email,
-            zipCode: req.body.zipCode
-        };
-    Subscriber.create(userParams)
+        let subscriberParams = getSubscriberParams(req.body);
+
+    Subscriber.create(subscriberParams)
             .then(subscriber =>  {
+                req.flash('success', `Subscribed successfully!`)
                 res.locals.redirect = "/subscribers";
                 res.locals.subscriber = subscriber;
                 next();
-                console.log(`${userParams.name} has subscribed successfully!`)
             })
             .catch(error  => {
                 console.log(`Error saving subscriber: ${error.message}`);
-                next(error);
                 res.locals.redirect = "/subscribers/new";
+                req.flash('error', `Error occured: ${error.message}`);
+                next();
             });
     },
     redirectView: (req, res, next) => {
@@ -55,7 +61,7 @@ module.exports = {
                 next();
             })
             .catch(error => {
-                console.log(`Error fetching user by ID: ${error.message}`);
+                console.log(`Error fetching subscriber by ID: ${error.message}`);
             })
     },
 
@@ -78,11 +84,7 @@ module.exports = {
 
     update: (req, res, next) => {
         let subscriberId = req.params.id;
-        subscriberParams = {
-            name: req.body.name,
-            email: req.body.email,
-            zipCode: req.body.zipCode
-        };
+        subscriberParams = getSubscriberParams(req.body);
 
        Subscriber.findByIdAndUpdate(subscriberId, {
             $set: subscriberParams
@@ -90,11 +92,13 @@ module.exports = {
             .then(subscriber => {
                 res.locals.redirect = `/subscribers/${subscriberId}`;
                 res.locals.subscriber = subscriber;
+                req.flash('success', `Successfully updated data for subscriber ${subscriber.name}`)
                 next();
             })
             .catch(error  => {
                 console.log(`Error updating subscriber by ID: ${error.message}`);
-                next(error);
+                req.flash('error', `While updating error encountered: ${error.message}`)
+                next();
             });
     },
     delete: (req, res, next)  => {
@@ -102,11 +106,14 @@ module.exports = {
         Subscriber.findByIdAndRemove(subscriberId)
             .then(() => {
                 res.locals.redirect = "/subscribers";
+                req.flash('success', `Subscriber deleted!`)
                 next();
             })
             .catch(error  => {
                 console.log('Error deleting subscribers by ID: ${error.message}');
-                next(error);
+                res.locals.redirect = "/subscribers";
+                req.flash('error', `Error while deletingsubscriber!`)
+                next();
             });
     }
 }
