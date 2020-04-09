@@ -38,7 +38,9 @@
 		<% if (flashMessages) { %>
 		<% if (flashMessages.success) { %>
 		<div class="flash success">
-			<%= flashMessages.success %>
+			<% flashMessages.success.forEach(message  => { %>
+            <%= message %>
+            <%  }); %>
 		</div>
 		<% } else if (flashMessages.error) { %>
 		<div class="flash error">
