@@ -3,6 +3,7 @@ const User = require('../models/user'),
 
 getUserParams = body => {
     return {        
+    username: body.username,
     name: {
                 first: body.first,
                 last: body.last
@@ -12,14 +13,6 @@ getUserParams = body => {
             zipCode: body.zipCode
         };
 };
-
-comparePassword = (input, data)  => {
-    bcrypt.compare(input, data)
-        .then(match  => {
-            console.log(`Match ${match} found between ${input} and ${data}`);
-            return match;
-        } )
-} 
 
 module.exports = {
  // action 1 to run the query   
@@ -111,16 +104,16 @@ module.exports = {
                 if (user.password != userParams.password) {
                     user.password = userParams.password;
                     res.locals.user = user;
-                    user.save()
                     res.locals.redirect = `/users/${userId}`; 
                 } 
 
                 if (user.email != userParams.email) {
                     user.email = userParams.email;
                     res.locals.user = user;
-                    user.save()
                     res.locals.redirect = `/users/${userId}`; 
                 }
+
+                user.save();
 
             })
             .catch(error  => {
@@ -160,27 +153,36 @@ module.exports = {
     login: (req, res) => {
         res.render("users/login");
     },
+
+    // search: (req, res, next)  => {
+    //     var id;
+    //     User.find({})
+    //         .then( users  => {
+    //             users.forEach( user  => {
+    //                 user.compareEmail(req.body.email)
+    //                     .then(matched  => {
+    //                         console.log(matched)
+    //                         if (matched) {
+    //                             id = user._id
+    //                             res.locals.user = user;
+    //                         } else {
+    //                             console.log('no match found')
+    //                         }
+    //                     })
+    //             } )
+    //             return id;
+    //         } )
+    //         .catch(error  => {
+    //             console.log(error.message)
+    //         })
+    // }, 
     authenticate: (req, res, next) => {
-        var id;
-        User.find({})
-            .then( users  => {
-                users.forEach( user  => {
-                    if (comparePassword(req.body.email, user.email)) {
-                        id = user._id
-                    }
-                } )
-            console.log(id)
-            } )
-            .catch(error  => {
-                console.log(error.message)
-            })
- 
         User.findOne({
-            _id: id
+            username: req.body.username
         })
             .then(user => {
                 if (user) {
-                    user.comparison(req.body.password, req.body.email)
+                    user.comparison(req.body.password)
                         .then(passwordMatch  => {
                             console.log(passwordMatch);
                             if (passwordMatch) {

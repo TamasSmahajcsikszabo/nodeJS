@@ -2,6 +2,7 @@
   <table class="table">
     <thead>
       <tr>
+        <th>User name</th>
         <th>Name</th>
         <th>Email</th>
         <th>Zip code</th>
@@ -12,6 +13,7 @@
     <tbody>
       <% subscribers.forEach( subscriber => { %>
       <tr>
+        <td><%= subscriber.username%></td>
         <td><%= subscriber.name%></td>
         <td><%= subscriber.email%></td>
         <td><%= subscriber.zipCode%></td>

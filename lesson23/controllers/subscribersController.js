@@ -1,6 +1,7 @@
 const Subscriber = require("../models/subscriber.js")
 getSubscriberParams = body  => {
     return {
+            username: body.username,
             name: body.name,
             email: body.email,
             zipCode: body.zipCode

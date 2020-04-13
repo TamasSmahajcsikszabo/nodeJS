@@ -5,6 +5,10 @@ const mongoose = require('mongoose'),
     {Schema} = mongoose,
 
     userSchema = new Schema({
+        username: {
+            type: String, 
+            trim: true
+        },
         name: {
             first: {
                 type: String,
@@ -100,12 +104,11 @@ userSchema.pre("save", function (next) {
         .catch(error  => {
             console.log(`error in hashing password: ${error.message}`);
             next(error);
-        });
+        })
 });
 
 userSchema.pre("save", function (next) {
     let user = this;
-
     bcrypt
         .hash(user.email, 10)
         .then(hash_email  => { 
@@ -120,9 +123,15 @@ userSchema.pre("save", function (next) {
         });
 });
 
-userSchema.methods.comparison = function(inputPassword, inputEmail) {
+userSchema.methods.compareEmail = function(inputEmail) {
     let user = this;
-    return bcrypt.compare(inputPassword, user.password) && bcrypt.compare(inputEmail, user.email);
+    console.log(`${inputEmail} compared with ${user.email}`)
+    return bcrypt.compare(user.email, inputEmail)
+}
+
+userSchema.methods.comparison = function(inputPassword) {
+    let user = this;
+    return bcrypt.compare(inputPassword, user.password);
 }
 
 module.exports = mongoose.model("User", userSchema);

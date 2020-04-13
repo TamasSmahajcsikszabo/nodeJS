@@ -1,6 +1,10 @@
 const mongoose = require("mongoose"),
     // adding validators to the data model:
     subscriberSchema = mongoose.Schema({
+        username: {
+            type: String, 
+            trim: true
+            },
         name: {
             type: String, 
             required: true
