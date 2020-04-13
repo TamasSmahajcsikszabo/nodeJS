@@ -61,9 +61,7 @@ router.use(connectFlash());
 // express will treat the connect-flash messages as local variables on the response
 router.use((req, res, next) => {
     res.locals.loggedIn = req.isAuthenticated();
-    console.log(res.locals.loggedIn)
     res.locals.currentUser = req.user;
-    console.log(res.locals.currentUser)
     res.locals.flashMessages = req.flash();
     next();
 })
@@ -94,7 +92,7 @@ router.delete("/subscribers/:id/delete", subscriberController.delete, subscriber
 //users
 router.get("/users", userController.index, userController.indexView)
 router.get("/users/new", userController.new)
-router.post("/users/create", userController.validate, userController.create, userController.redirectView)
+router.post("/users/create", userController.logMail, userController.validate, userController.create, userController.redirectView)
 router.get("/users/login", userController.login);
 router.post("/users/login", userController.authenticate);
 router.get("/users/logout", userController.logout, userController.redirectView);

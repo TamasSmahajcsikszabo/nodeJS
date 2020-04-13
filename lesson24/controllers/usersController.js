@@ -211,5 +211,11 @@ module.exports = {
                 next();
             }
         })
+    },
+    logMail: (req, res, next) => {
+        let email = req.body.email.toString();
+        let domain = email.substring(email.indexOf("@") + 1, email.indexOf("."));
+        console.log(`Recently logged user email domain: ${domain}`);
+        next();
     } 
 };
