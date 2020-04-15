@@ -1,3 +1,4 @@
+"user strict";
 const mongoose = require("mongoose"),
     subscriberController = require("./controllers/subscribersController"),
     homeController = require("./controllers/homeController.js"),
@@ -18,14 +19,13 @@ const mongoose = require("mongoose"),
 
 
 
+mongoose.Promise = global.Promise
 mongoose.connect("mongodb://localhost:27017/recipe_db", 
     { useNewUrlParser: true,
       useUnifiedTopology: true
     })
 
-mongoose.Promise = global.Promise
-mongoose.set('useFindAndModify', false);
-app.use("/", router)
+// mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3000);
 
@@ -46,7 +46,7 @@ router.use(cookieParser("secret_passcode")); //cookie pass code to encrypt data
 router.use(expressSession({
     secret: "secret_passcode", // secret passcode to encrypt session data
     cookie: {
-        maxAge: 400
+        maxAge: 4000000
     },
     resave: false, // don't update existing session the server if nothing has changes in the session
     saveUninitialized: false // don't send cookie to the user if no messages are added to the session
@@ -92,9 +92,9 @@ router.delete("/subscribers/:id/delete", subscriberController.delete, subscriber
 //users
 router.get("/users", userController.index, userController.indexView)
 router.get("/users/new", userController.new)
-router.post("/users/create", userController.logMail, userController.validate, userController.create, userController.redirectView)
+router.post("/users/create", userController.validate, userController.create, userController.redirectView)
 router.get("/users/login", userController.login);
-router.post("/users/login", userController.authenticate);
+router.post("/users/login", userController.logMail, userController.authenticate, userController.redirectView);
 router.get("/users/logout", userController.logout, userController.redirectView);
 router.get("/users/:id/edit", userController.edit);
 router.put("/users/:id/update", userController.update, userController.redirectView)
@@ -105,6 +105,7 @@ router.get("/users/:id", userController.show, userController.showView)
 router.use(errorControllers.pageNotFoundError)
 router.use(errorControllers.internalServerError)
 
+app.use("/", router)
 app.listen(app.get("port"), () => {
   console.log(`Server running at http://localhost:${app.get("port")}`);
 });

@@ -11,7 +11,7 @@ getUserParams = body => {
                 last: body.last
             },
             email: body.email,
-            // password: body.password,
+            password: body.password,
             zipCode: body.zipCode
         };
 };
@@ -100,11 +100,11 @@ module.exports = {
         userParams = getUserParams(req.body);
         User.findById({ _id: userId })
             .then(user => {
-                // if (user.password != userParams.password) {
-                //     user.password = userParams.password;
-                //     res.locals.user = user;
-                //     res.locals.redirect = `/users/${userId}`; 
-                // } 
+                if (user.password != userParams.password) {
+                    user.password = userParams.password;
+                    res.locals.user = user;
+                    res.locals.redirect = `/users/${userId}`; 
+                } 
 
                 if (user.email != userParams.email) {
                     user.email = userParams.email;
@@ -213,9 +213,13 @@ module.exports = {
         })
     },
     logMail: (req, res, next) => {
-        let email = req.body.email.toString();
-        let domain = email.substring(email.indexOf("@") + 1, email.indexOf("."));
-        console.log(`Recently logged user email domain: ${domain}`);
+        User.findOne({
+            username: req.body.username
+        }).then(user  => {
+            let email = user.email.toString();
+            let domain = email.substring(email.indexOf("@") + 1, email.indexOf("."));
+            console.log(`Recently logged user email domain: ${domain}`);
+        });
         next();
     } 
 };

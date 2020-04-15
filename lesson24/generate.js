@@ -3,7 +3,6 @@ const random = require('./random.js'),
     Subscriber = require("./models/subscriber"),
     User = require("./models/user.js"),
     Course = require("./models/course");
-
 mongoose.Promise = global.Promise;
 
 var surenames = ['Smith', 'Taylor', 'Johns', 'Mellows', 'Small', 'Watson', 'Big', 'Green'],
