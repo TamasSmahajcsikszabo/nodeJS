@@ -1,0 +1,2 @@
+curl --data "username=tester&first=dane&last=dane&email=dane@tester.com&zipCode=2323&password=test" http://localhost:3000/api/users/new
+

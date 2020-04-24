@@ -1,5 +1,6 @@
 const Course = require('../models/course.js'),
-    httpStatus = require("http-status-codes");
+    httpStatus = require("http-status-codes"),
+    User = require("../models/user.js");
 getCourseParams = body => {
     return {
             title: body.title,
@@ -26,13 +27,13 @@ module.exports = {
 // action 2 to serve the results to the view
     indexView: (req, res)  => {
         // checking request format using query paramterers
-        // if (req.query.format == "json") {
+        if (req.query.format == "json") {
             // add ?format=json query parameter to the query URL to render data in JSON format
         res.json(res.locals.courses);
         console.log("course data accessed")
-        // } else {
-            // res.render("courses/index");
-        // }
+        } else {
+            res.render("courses/index");
+        }
     }, 
     new: (req, res) => {
         res.render("courses/new");
@@ -143,6 +144,67 @@ module.exports = {
                 status: httpStatus.INTERNAL_SERVER_ERROR,
                 message: "Unknown error."
             };
+        }
+        res.json(errorObject);
+    },
+    join: (req, res, next) => {
+        let courseId = req.params.id,
+            currentUser = req.user._id;
+        if (currentUser) {
+            User.findByIdAndUpdate(currentUser, {
+                $addToSet: {
+                    courses: courseId
+                }
+            })
+                .then(() => {
+                    res.locals.success = true;
+                    next();
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } else {
+            next(new Error("User must log in."));
+        }
+    },
+    subscribe: (req, res, next) => {
+        let courseId = req.params.id,
+            currentUser = req.user._id;
+
+        if (currentUser) {
+            let courses;
+            User.findOne({
+                _id: currentUser
+            })
+                .then(user  => { 
+                   return courses = user.courses;
+                })
+                .then(courses  => {
+                    if (courses.includes(String(courseId))) {
+                        res.locals.subscribed = true;
+                    } else {
+                        res.locals.subscribed = false;
+                    } 
+                    next();
+                })
+                .catch(error  => {
+                    next(error);
+                })
+        }
+    },
+    filterUserCourses: (req, res, next)  => {
+        let currentUser = res.locals.currentUser;
+        if (currentUser) {
+            let mappedCourses = res.locals.courses.map((course) => {
+                let userJoined = currentUser.courses.some((userCourse) => {
+                    return userCourse.equals(course._id);
+                });
+                return Object.assign(course.toObject(), {joined: userJoined});
+            });
+            res.locals.courses = mappedCourses;
+            next();
+        } else {
+            next();
         }
     } 
 };

@@ -17,9 +17,6 @@ body {
   top: 0;
 }
 
-h2 {
-    top: 50px;
-}
 #title {
   color: #625a56;
   margin: 0;
@@ -171,6 +168,15 @@ button[type="submit"] {
   display: inline-block;
   float: left;
 }
+.course-title-main {
+  font-family: "Baloo Bhaina";
+  padding: 0 5px;
+  font-size: 30px;
+  border-radius: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  float: center;
+}
 
 .course-description {
   /* border-bottom: 1px solid #625956; */
@@ -191,4 +197,29 @@ button[type="submit"] {
 
 .modal-body {
   padding: 15px 30px;
+}
+
+.join-button {
+  position: absolute;
+  right: 35px;
+  width: 100px;
+  margin-top: 30px;
+  border: 1px solid;
+  color: #fff;
+  background-color: #3d41b4;
+}
+
+.joined-button {
+  position: absolute;
+  right: 35px;
+  margin-top: 30px;
+  background-color: #c1ffc1;
+  color: #625956;
+  border: 1px solid;
+}
+
+.fork {
+    width: 40px;
+    height: 40px;
+    white-space: nowrap;
 }

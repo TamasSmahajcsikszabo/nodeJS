@@ -1,7 +1,8 @@
 const User = require('../models/user'),
     // bcrypt = require("bcrypt"),
     passport = require("passport"),
-    passportLocalMongoose = require("passport-local-mongoose");
+    passportLocalMongoose = require("passport-local-mongoose"),
+    httpStatus = require("http-status-codes");
 
 getUserParams = body => {
     return {        
@@ -54,14 +55,28 @@ module.exports = {
 
         User.register(newUser, req.body.password, (error, user) => {
             if (user) {
+                if (!req.query.format == "json") {
                 req.flash("success", `${user.fullName}'s account created successfully!`);
                 req.locals.redirect = "/users";
                 next();
+                } else {
+                    res.json({
+                        status: httpStatus.OK,
+                        message: `user with username "${user.username}" created`
+                    })
+                }
             } else {
+                if  (!req.query.format == "json") {
                 req.flash("error", `Failed to create user because: ${error.message}`);
                 res.locals.redirect = "/users/new";
                 next();
-            }
+                } else {
+                    res.json({
+                        status: httpStatus.BAD_REQUEST,
+                        message: `failed to create: ${error.message}`
+                    })
+                }
+        }
         })
     },
     
@@ -229,5 +244,11 @@ module.exports = {
             console.log(`Recently logged user email domain: ${domain}`);
         });
         next();
-    } 
+    },
+    respondJSON: (req, res) => {
+        res.json({
+            status: httpStatus.OK,
+            data: res.locals // the response's locals object already has attached data by this point
+        })
+    }
 };
