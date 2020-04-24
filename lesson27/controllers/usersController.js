@@ -98,7 +98,7 @@ module.exports = {
     },
 
     showView: (req, res) => {
-        if (req.query.format == "json") {
+        if (req.query.format == "json" || req.path.indexOf("api")) {
             res.json(res.locals.user);
         } else {
         res.render("users/show");        

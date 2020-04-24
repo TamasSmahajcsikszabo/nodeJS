@@ -10,6 +10,7 @@ router.get("/courses/:id/join", courseController.subscribe,  courseController.jo
 //users
 router.get("/users", userController.index, userController.respondJSON);
 router.post("/users/new", userController.validate, userController.create);
+router.get("/users/:id", userController.show, userController.showView);
 
 //error handler
 router.use(courseController.errorJSON);
