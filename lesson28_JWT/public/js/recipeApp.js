@@ -1,8 +1,8 @@
 $(document).ready(() => {
-  let apiToken = $("#apiToken").data("token")
+  // let apiToken = $("#apiToken").data("token")
   $("#modal-button").click(() => {
     $(".modal-body").html("");
-    $.get(`/api/courses?apiToken=${apiToken}`, (results = {}) => {
+    $.get(`/api/courses`, (results = {}) => {
       let data = results.data;
       if (!data || !data.courses) return;
       data.courses.forEach((course)  =>{
@@ -47,11 +47,11 @@ $(document).ready(() => {
 
 
 let addJoinButtonListener = () => {
-  let apiToken = $("#apiToken").data("token")
+  // let apiToken = $("#apiToken").data("token")
   $(".join-button").click((event) => {
     let $button = $(event.target),
       courseId = $button.data("id");
-  $.get(`/api/courses/${courseId}/join?apiToken=${apiToken}`, (results = {}) => {
+  $.get(`/api/courses/${courseId}/join`, (results = {}) => {
     let data = results.data;
     if (data && !data.subscribed) {
       $button

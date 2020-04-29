@@ -302,10 +302,52 @@ module.exports = {
             jsonWebToken.verify(
                 token,
                 "secret_encoding_passphrase",
-                (errors, payload)  => {
-                    if (payload)
+                (errors, payload)  => {  //decoded payload
+                    if (payload) {
+                        User.findById(payload.data).then(user => {
+                            if (user) {
+                                console.log(`${user.username} authenticated` )
+                                next();
+                            } else {
+                                res.status(httpStatus.FORBIDDEN).json({
+                                    error: true,
+                                    message: "No user account found."
+                                });
+                            }
+                        });
+                    } else {
+                        res.status(httpStatus.UNAUTHORIZED).json({
+                            error: true, 
+                            message: "Cannot verify API token,"
+                        });
+                        next();
+                    }
                 }
-            )
+            );
+        } else {
+            res.status(httpStatus.UNAUTHORIZED).json({
+                error: true,
+                message: "Provide Token"
+            });
         }
-    } 
+    },
+    token: (req, res, next) => {
+        res.render("users/token");
+    },
+    getApiToken: (req, res, next) => {
+        let currentUser = req.user;
+        console.log(currentUser);
+            if (currentUser) {
+                let signedToken = jsonWebToken.sign( // creating a user token
+                    {
+                        data: currentUser._id,
+                        exp: new Date().setDate(new Date().getDate() + 1)
+                    },
+                    "secret_encoding_passphrase"
+                );
+                res.locals.currentUser.apiToken = signedToken;
+            } else {
+                res.locals.redirect = "/usersl/login"
+            }
+    }
 };

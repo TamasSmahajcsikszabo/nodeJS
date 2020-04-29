@@ -10,6 +10,7 @@ router.post("/login", userController.apiAuthenticate);
 router.get("/courses", courseController.index, courseController.filterUserCourses, courseController.respondJSON);
 router.get("/courses/:id/join", courseController.subscribe,  courseController.join, courseController.respondJSON);
 
+router.use(userController.verifyJWT);
 //users
 router.get("/users", userController.index, userController.respondJSON);
 router.post("/users/new", userController.validate, userController.create);

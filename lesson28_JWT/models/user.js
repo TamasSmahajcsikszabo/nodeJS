@@ -95,11 +95,11 @@ userSchema.pre("save", function (next) {
 });
 
 // hook for generating API token
-userSchema.pre("save", function (next) {
-    let user = this;
-    if (!user.apiToken) user.apiToken = randToken.generate(16);
-    next();
-})
+// userSchema.pre("save", function (next) {
+//     let user = this;
+//     if (!user.apiToken) user.apiToken = randToken.generate(16);
+//     next();
+// })
 
 //hashing hook
 // userSchema.pre("save", function (next) {

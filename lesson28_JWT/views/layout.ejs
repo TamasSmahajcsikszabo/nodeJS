@@ -35,13 +35,16 @@
 			<a href="/subscribers">
 				<span class="button">Subscribers</span>
 			</a>
+			<a href="/users/token">
+				<span class="button">Get API token</span>
+			</a>
             <a>
                 <%- include('courses/_coursesModal.ejs') %>
             </a>
         </div>
         <div class="login-status">
             <% if (loggedIn) {%>
-            <div id="apiToken" data-token="<%= currentUser.apiToken %>" style="display:none;">
+            <!-- <div id="apiToken" data-token="<%= currentUser.apiToken %>" style="display:none;"> -->
             <div class="bubble logged-in">
                 Logged in as <a href="<%=`/users/${currentUser._id}`%>">
               <%= currentUser.fullName %></a>

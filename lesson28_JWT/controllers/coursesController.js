@@ -27,7 +27,7 @@ module.exports = {
 // action 2 to serve the results to the view
     indexView: (req, res)  => {
         // checking request format using query paramterers
-        if (req.query.format == "json") {
+        if (req.originalUrl.indexOf("api")) {
             // add ?format=json query parameter to the query URL to render data in JSON format
         res.json(res.locals.courses);
         console.log("course data accessed")

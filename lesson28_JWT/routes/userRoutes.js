@@ -7,6 +7,8 @@ router.post("/create", userController.validate, userController.create, userContr
 router.get("/login", userController.login);
 router.post("/login", userController.logMail, userController.authenticate);
 router.get("/logout", userController.logout, userController.redirectView);
+router.get("/token", userController.token);
+router.post("/token", userController.getApiToken, userController.redirectView);
 router.get("/:id/edit", userController.edit);
 router.put("/:id/update", userController.update, userController.redirectView)
 router.get("/:id", userController.show, userController.showView)
