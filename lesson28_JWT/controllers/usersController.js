@@ -297,6 +297,9 @@ module.exports = {
         })(req, res, next);
     },
     verifyJWT: (req, res, next) => {
+        const excluded_routes = ['/login', '/token', '/courses', '/courses/:id/jon', '/users/new'];
+        if (!excluded_routes.includes(req.url)) {
+        console.log("Verification initiated!");
         let token = req.headers.token;
         if (token) {
             jsonWebToken.verify(
@@ -330,14 +333,16 @@ module.exports = {
                 message: "Provide Token"
             });
         }
+            
+    }
     },
     token: (req, res, next) => {
         res.render("users/token");
     },
     getApiToken: (req, res, next) => {
-        let currentUser = req.user;
-        console.log(currentUser);
+        passport.authenticate("local", (error, currentUser) => {
             if (currentUser) {
+                console.log(`${currentUser.fullName} found in database and authenticated.`)
                 let signedToken = jsonWebToken.sign( // creating a user token
                     {
                         data: currentUser._id,
@@ -345,9 +350,26 @@ module.exports = {
                     },
                     "secret_encoding_passphrase"
                 );
-                res.locals.currentUser.apiToken = signedToken;
+                res.locals.apiToken = signedToken;
+                res.locals.user = currentUser;
+                res.locals.user.apiToken = res.locals.apiToken;
+                res.locals.user.save();
+                if (req.originalUrl.indexOf("api")) {
+                    res.json({
+                        token: signedToken
+                    })
+                    next();
+                } else {
+                    res.locals.redirect = "/";
+                    req.flash("success", `API token generated!`);
+                    next();
+                }
             } else {
-                res.locals.redirect = "/usersl/login"
+                console.log(`User not authenticated, please log in.`)
+                req.flash("error", "Please try again to authenticate!")
+                res.locals.redirect = "/users/token";
+                next();
             }
-    }
+    })(req, res, next);
+}
 };

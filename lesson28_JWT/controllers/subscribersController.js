@@ -1,4 +1,5 @@
-const Subscriber = require("../models/subscriber.js")
+const Subscriber = require("../models/subscriber.js"),
+    httpStatus = require("http-status-codes"),
 getSubscriberParams = body  => {
     return {
             username: body.username,
@@ -15,7 +16,7 @@ module.exports = {
         .exec()
         .then((subscribers) => {
             res.locals.subscribers = subscribers;
-            if (req.query.format == "json") {
+            if (req.originalUrl.indexOf("api")) {
                 res.json(res.locals.subscribers);
             } else {
                 res.render("subscribers/index", {
@@ -27,9 +28,9 @@ module.exports = {
             console.log(error.message)
             return []
         })
-        .then(() => {
-            console.log("promise complete")
-        })
+        // .then(() => {
+        //     console.log("promise complete")
+        // })
 },
 
     new: (req, res) => {
@@ -125,5 +126,11 @@ module.exports = {
                 req.flash('error', `Error while deletingsubscriber!`)
                 next();
             });
+    },
+    respondJSON: (req, res) => {
+        res.json({
+            status: httpStatus.OK,
+            data: res.locals // the response's locals object already has attached data by this point
+        })
     }
 }

@@ -97,7 +97,7 @@ userSchema.pre("save", function (next) {
 // hook for generating API token
 // userSchema.pre("save", function (next) {
 //     let user = this;
-//     if (!user.apiToken) user.apiToken = randToken.generate(16);
+//     if (!user.apiToken) user.apiToken = user.apiToken;
 //     next();
 // })
 
