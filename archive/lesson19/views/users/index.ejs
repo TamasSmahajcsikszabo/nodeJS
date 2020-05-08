@@ -1,0 +1,26 @@
+<h2>Users Table</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Zip Code</th>
+        <th>Subscribed Courses</th>
+        <th>Length of Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user  => { %>
+      <tr>
+        <td>
+          <a href="<%= `/users/${user._id}` %>">
+            <%= user.fullName %>
+        </td>
+        <td><%= user.email%></td>
+        <td><%= user.zipCode%></td>
+        <td><%= user.subscribedCourse%></td>
+        <td><%= user.nameLength()%></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>

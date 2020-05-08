@@ -1,0 +1,10 @@
+<% if (currentUser) { %>
+  <h1>Chat</h1>
+  <form id="chatForm">
+    <input id="chatInput", type="text">
+      <input id="chatUserName" type="hidden" value="<%= currentUser.fullName %>">
+      <input id="chatUserId" type="hidden" value="<%= currentUser._id %>">
+    <input type="submit" value="Send">
+  </form>
+  <div id="chat"></div>
+<% } %>

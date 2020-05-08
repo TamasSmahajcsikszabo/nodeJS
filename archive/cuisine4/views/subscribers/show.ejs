@@ -1,0 +1,34 @@
+<h1>User data for <%= subscriber.name %></h1>
+
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <td><%= subscriber.name %></td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td><%=subscriber.email%></td>
+  </tr>
+  <tr>
+    <th>Zip Code</th>
+    <td><%= subscriber.zipCode%></td>
+  </tr>
+  <tr>
+    <th>Password</th>
+    <td><%= subscriber.password%></td>
+  </tr>
+</table>
+
+<span class="custButton">
+  <a href="/users" class="button">Show all users</a>
+</span>
+<br>
+<span class="custButton">
+  <a href="<%= `/subscribers/${subscriber._id}/edit` %>"class="button">Edit subscriber details</a>
+</span>
+<br>
+<span class="custButton">
+  <a href="<%= `/subscribers/${subscriber._id}/delete?_method=DELETE` %>" class="button" onclick="return corfirm('Are you sure?')">Delete subscriber</a>
+</span>
+
+<p> This subscriber has <%= subscriber.courses.length  %> associated course(s). </p>
