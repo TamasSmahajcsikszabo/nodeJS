@@ -6,9 +6,8 @@ const Message = require("../models/message.js"),
 module.exports = io => {
     io.on("connection", client  => {
         
-        client.on("user connected", (user) => {
-            console.log(user);
-            // client.broadcast.emit("user connected", user);
+        client.on("user connected", data => {
+            client.broadcast.emit("user connected", data.user);
         })
 
         Message.find({})
@@ -18,8 +17,8 @@ module.exports = io => {
                 client.emit("load all messages", messages.reverse());
             })
         
-        client.on("disconnect", ()  => {
-            client.broadcast.broadcast.emit("user disconnected");
+        client.on("disconnect", data  => {
+            client.broadcast.emit("user disconnected");
         });
 
         client.on("message", data  => {

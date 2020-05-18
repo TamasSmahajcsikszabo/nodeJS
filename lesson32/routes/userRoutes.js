@@ -6,7 +6,7 @@ router.get("/", userController.index, userController.indexView);
 router.get("/new", userController.new);
 router.post("/create", userController.validate, userController.create, userController.redirectView);
 router.get("/login", userController.login);
-router.post("/login", userController.logMail,userController.emitUserName, userController.authenticate);
+router.post("/login", userController.logMail, userController.authenticate);
 router.get("/logout", userController.logout, userController.redirectView);
 router.get("/token", userController.token);
 router.post("/token", userController.getApiToken, userController.redirectView);

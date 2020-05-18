@@ -1,6 +1,7 @@
 //client side, what the client is getting from the server
 $(document).ready(() => {
-  const socket = io();
+  const socket = io(),
+        userName = $("#chatUserName").val();
 
 $("#chatForm").submit(() => {
  let text = $("#chatInput").val(),
@@ -26,6 +27,10 @@ socket.on("message", (message) => {
         $(".chat-icon").fadeOut(200).fadeIn(200);
     }
 });
+if (!userName.includes([null, undefined])) {
+socket.emit("user connected", {
+    user: userName
+});
 
 socket.on("user connected", (user) => {
         displayMessage({
@@ -33,14 +38,25 @@ socket.on("user connected", (user) => {
             content: `${user} has joined the chat`
     });
 });
+}
 
-//client side event handler for the 'user disconnected' event when it's broadcast
+
+// client side event handler for the 'user disconnected' event when it's broadcast
+ // socket.on("user disconnected", () => {
+ //     displayMessage({
+ //         userName: "Notice",
+ //         content: `user left the chat`
+ //     });
+ // });
+
+
 socket.on("user disconnected", () => {
-    displayMessage({
-        userName: "Notice",
-        content: `user left the chat`
+        displayMessage({
+            userName: "Notice",
+            content: `user has left the chat`
     });
 });
+
 let displayMessage = (message) => {
     $("#chat").prepend(
         $("<li>").html(`
