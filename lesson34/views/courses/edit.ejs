@@ -1,0 +1,18 @@
+<div class="data-form">
+  <form class="form-singin" action="<%= `/courses/${course._id}/update?_method=PUT` %>" method="POST">
+    <h2 style="font-size: 22px">Edit course</h2>
+    <label for="inputTitle">Title</label> <br>
+    <input class="myinput" type="text" name="title" id="inputTitle" value="<%= course.title %>" autofocus> <br>
+    </br>
+    <label for="inputDescripton">Description</label> <br>
+    <input class="myinput" type="text" name="description" id="inputDescripton" value="<%= course.description %>"> <br> 
+    </br>
+    <label for="inputItems">Items</label> <br>
+    <input class="myinput" type="text" name="items" id="inputItems" value="<%= course.items %>"> <br>
+    </br>
+    <label for="inputZipCode">Zip code</label> <br>
+    <input class="myinput" type="text" name="zipCode" id="inputZipCode" pattern="\d*" value="<%= course.zipCode %>" required> <br>
+    </br>
+    <button class="btn btn-primary btn-lg btn-block" style="background-color: #0080FF" type="submit" >Update</button>
+  </form>
+</div>

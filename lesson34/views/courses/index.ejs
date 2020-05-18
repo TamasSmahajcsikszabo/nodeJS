@@ -1,0 +1,36 @@
+  <div class="col-sm-6">
+    <img src="images/geek.jpg" alt="", style="width:100px;height:100px">
+  </div>
+<h2>Courses Table</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Items</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% courses.forEach(course=> { %>
+      <tr>
+        <td>
+          <a href="<%= `/courses/${course._id}` %>" >
+            <%= course.title %>
+        </td>
+        <td><%=course.description%></td>
+        <td><%=course.items%></td>
+        <td>
+          <a href="<%= `/courses/${course._id}/edit` %>">
+          Edit
+          </a>
+        </td>
+        <td>
+          <a href="<%= `/courses/${course._id}/delete?_method=DELETE` %>"
+          onclick="return confirm('Sure?')">Delete</a>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>

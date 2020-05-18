@@ -1,0 +1,6 @@
+curl --data "username=tester&first=dane&last=dane&email=dane@tester.com&zipCode=2323&password=test" http://localhost:3000/api/users/new
+
+
+curl --data "username=tester&first=dane&last=dane3&email=dane@tester.com&zipCode=2323&password=test" http://localhost:3000/api/users/5ea304aace1718a5447ba4a4/update
+
+curl -H "token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNWU5NDRhMGE3ODAzNTQ4Yjg3NjIxZDUxIiwiZXhwIjoxNTg4MjM1ODIwNzI1LCJpYXQiOjE1ODgxNDk0MjB9.btmvKE2fB7sHji-0ajODEZV3RbaXvM6AlUXTjTv690Q"
