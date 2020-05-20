@@ -15,16 +15,34 @@ const morgan = require('morgan')
 
 mongoose.Promise = global.Promise
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/recipe_db',
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false
+if (process.env.NODE_ENV === 'test') {
+  mongoose.connect('mongodb://localhost:27017/recipe_test_db)',
+    {
+      useNewUrlParser: true,
+      useFindAndModify: false
 
-  })
+    })
+} else {
+  mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/recipe_db)',
+    {
+      useNewUrlParser: true,
+      useFindAndModify: false
+
+    })
+}
+
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/recipe_db',
+//   {
+//     useNewUrlParser: true,
+//     useFindAndModify: false
+
+//   })
 
 // mongoose.set('useFindAndModify', false);
 app.set('view engine', 'ejs')
-app.set('port', process.env.PORT || 3000)
+
+if (process.env.NODE_ENV === 'test') { app.set('port', 3001) } else app.set('port', process.env.PORT || 3000)
+// app.set('port', process.env.PORT || 3000)
 // set API token
 // app.set("token", process.env.TOKEN || "recipeT0k3n")
 
@@ -78,3 +96,5 @@ server = app.listen(app.get('port'), () => {
 }),
 io = require('socket.io')(server),
 require('./controllers/chatControllers.js')(io) // no need to store this in a constant as won't be used in the main.js
+
+module.exports = app
