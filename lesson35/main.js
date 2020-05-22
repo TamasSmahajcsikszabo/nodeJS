@@ -16,14 +16,14 @@ const morgan = require('morgan')
 mongoose.Promise = global.Promise
 
 if (process.env.NODE_ENV === 'test') {
-  mongoose.connect('mongodb://localhost:27017/recipe_test_db)',
+  mongoose.connect('mongodb://localhost:27017/recipe_test_db',
     {
       useNewUrlParser: true,
       useFindAndModify: false
 
     })
 } else {
-  mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/recipe_db)',
+  mongoose.connect('mongodb://localhost:27017/recipe_db',
     {
       useNewUrlParser: true,
       useFindAndModify: false

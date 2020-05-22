@@ -1,59 +1,58 @@
-const mongoose = require('mongoose'),
-    Subscriber = require('../models/subscriber.js'),
-    Course = require('../models/course.js'),
-    bcrypt = require('bcrypt'),
-    passportLocalMongoose = require("passport-local-mongoose"),
-    {Schema} = mongoose,
-    randToken = require("rand-token"),
+const mongoose = require('mongoose')
+const Subscriber = require('../models/subscriber.js')
+const Course = require('../models/course.js')
+const bcrypt = require('bcrypt')
+const passportLocalMongoose = require('passport-local-mongoose')
+const { Schema } = mongoose
+const randToken = require('rand-token')
 
-    userSchema = new Schema({
-        username: {
-            type: String, 
-            trim: true
-        },
-        name: {
-            first: {
-                type: String,
-                trim: true
-            },
-            last: {
-                type: String,
-                trim: true
-            }
-        },
-        email: {
-            type: String, 
-            required: true, 
-            lowercase: true, 
-            unique: true
-        },
-        zipCode: {
-            type: Number,
-            min: [1000, "Zip code too short"],
-            max: 99999
-        },
-        // password: {
-        //     type: String,
-        //     required: true
-        // },
-        courses: [{type: Schema.Types.ObjectId, ref: "Course"}],
-        subscribedAccount: {type: Schema.Types.ObjectId, ref: "Subscriber"},
-        apiToken: {
-            type: String
-        }
-    }, {
-        timestamps: true
-    });
+const userSchema = new Schema({
+  username: {
+    type: String,
+    trim: true
+  },
+  name: {
+    first: {
+      type: String,
+      trim: true
+    },
+    last: {
+      type: String,
+      trim: true
+    }
+  },
+  email: {
+    type: String,
+    required: true,
+    lowercase: true,
+    unique: true
+  },
+  zipCode: {
+    type: Number,
+    min: [1000, 'Zip code too short'],
+    max: 99999
+  },
+  // password: {
+  //     type: String,
+  //     required: true
+  // },
+  courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+  subscribedAccount: { type: Schema.Types.ObjectId, ref: 'Subscriber' },
+  apiToken: {
+    type: String
+  }
+}, {
+  timestamps: true
+})
 
-
-userSchema.methods.nameLength = function() {
-        return this.name.first.length + this.name.last.length;
+userSchema.methods.nameLength = function () {
+  return this.name.first.length + this.name.last.length
 }
 
-userSchema.virtual("fullName")
-    .get(function() {
-        return `${this.name.first} ${this.name.last}`;
-    });
+userSchema.virtual('fullName')
+  .get(function () {
+    return `${this.name.first} ${this.name.last}`
+  })
 
 // mongoose.connect("mongodb://localhost:27017/recipe_db",
 //         { useNewUrlParser  : true}
@@ -73,26 +72,25 @@ userSchema.virtual("fullName")
 //         return course
 //     });
 
-
 // hook
-userSchema.pre("save", function (next) {
-    let user = this;
-    if (user.subscribedAccount === undefined) {
-        Subscriber.findOne({
-            email: user.email
-        })
-            .then(subscriber  => {
-                user.subscribedAccount = subscriber;
-                next();
-            })
-            .catch(error => {
-                console.log(`Error in connecting subscriber: ${error.message}`);
-                next(error);
-            })
-    } else {
-        next();
-    }
-});
+userSchema.pre('save', function (next) {
+  const user = this
+  if (user.subscribedAccount === undefined) {
+    Subscriber.findOne({
+      email: user.email
+    })
+      .then(subscriber => {
+        user.subscribedAccount = subscriber
+        next()
+      })
+      .catch(error => {
+        console.log(`Error in connecting subscriber: ${error.message}`)
+        next(error)
+      })
+  } else {
+    next()
+  }
+})
 
 // hook for generating API token
 // userSchema.pre("save", function (next) {
@@ -101,13 +99,13 @@ userSchema.pre("save", function (next) {
 //     next();
 // })
 
-//hashing hook
+// hashing hook
 // userSchema.pre("save", function (next) {
 //     let user = this;
 
 //     bcrypt
 //         .hash(user.password, 10)
-//         .then(hash  => { 
+//         .then(hash  => {
 //             console.log(`original: ${user.password}`)
 //             user.password = hash;
 //             console.log(`hashed: ${user.password}`)
@@ -123,7 +121,7 @@ userSchema.pre("save", function (next) {
 //     let user = this;
 //     bcrypt
 //         .hash(user.email, 10)
-//         .then(hash_email  => { 
+//         .then(hash_email  => {
 //             console.log(`original: ${user.email}`)
 //             user.email = hash_email;
 //             console.log(`hashed: ${user.email}`)
@@ -147,7 +145,7 @@ userSchema.pre("save", function (next) {
 // }
 
 userSchema.plugin(passportLocalMongoose, {
-    usernameField: "username"
-});
+  usernameField: 'username'
+})
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema)
