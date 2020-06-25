@@ -13,18 +13,18 @@ const io = require('socket.io-client')
 require('../main.js')
 
 chai.use(chaiHTTP)
-// beforeEach(done => {
-//   User.remove({})
-//     .then(() => {
-//       done()
-//     })
-// })
-// beforeEach(done => {
-//   Message.remove({})
-//     .then(() => {
-//       done()
-//     })
-// })
+beforeEach(done => {
+  User.remove({})
+    .then(() => {
+      done()
+    })
+})
+beforeEach(done => {
+  Message.remove({})
+    .then(() => {
+      done()
+    })
+})
 
 describe('SAVE testuser and post', () => {
   it('should save a test user who will send a message', () => {
